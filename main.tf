@@ -79,7 +79,7 @@ resource "azurerm_mysql_flexible_server" "example" {
 resource "azurerm_mysql_flexible_server_firewall_rule" "example" {
   name                = "office"
   resource_group_name = azurerm_mysql_flexible_server.example.resource_group_name
-  server_name         = azurerm_mysql_flexible_server.example.name
+  server_name         = azurerm_mysql_flexible_server.example[each.key]
   start_ip_address    = "0.0.0.0"
   end_ip_address      = "0.0.0.0"
 }
