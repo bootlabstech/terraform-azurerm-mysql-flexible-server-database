@@ -37,14 +37,7 @@
 #   charset             = var.charset
 #   collation           = var.collation
 # }
-# # Network setting allows All Azure Services
-# resource "azurerm_mysql_flexible_server_firewall_rule" "example" {
-#   name                = "office"
-#   resource_group_name = azurerm_mysql_flexible_server.example.resource_group_name
-#   server_name         = azurerm_mysql_flexible_server.example.name
-#   start_ip_address    = "0.0.0.0"
-#   end_ip_address      = "0.0.0.0"
-# }
+
 
 resource "random_password" "password" {
  length = 16
@@ -81,4 +74,12 @@ resource "azurerm_mysql_flexible_server" "example" {
   #   start_minute = 
   # }
 
+}
+# Network setting allows All Azure Services
+resource "azurerm_mysql_flexible_server_firewall_rule" "example" {
+  name                = "office"
+  resource_group_name = azurerm_mysql_flexible_server.example.resource_group_name
+  server_name         = azurerm_mysql_flexible_server.example.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
 }
