@@ -40,7 +40,7 @@ resource "random_password" "password" {
  special = true
 }
 resource "azurerm_key_vault_secret" "mysql_username" {
- name = "${var.name}-username"
+ name = "${var.server_name}-username"
  value = azurerm_mysql_flexible_server.example.administrator_login
  key_vault_id = data.azurerm_key_vault.key_vault.id
 
@@ -48,7 +48,7 @@ resource "azurerm_key_vault_secret" "mysql_username" {
 
 
 resource "azurerm_key_vault_secret" "mysql_password" {
- name  = "${var.name}-password"
+ name  = "${var.server_name}-password"
  value = random_password.password.result
  key_vault_id = data.azurerm_key_vault.key_vault.id
 
