@@ -66,8 +66,8 @@ variable "storage_mb" {
 #   description = "value"
 
 # }
-# variable "collation" {
-#   type        = string
-#   description = "value"
+variable "keyvault_name" {
+  type        = string
+  description = "value"
 
-# }
+}
