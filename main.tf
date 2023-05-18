@@ -65,7 +65,7 @@ resource "azurerm_key_vault_secret" "mysql_password" {
   for_each= { for i in var.server_set : i.name => i }
     name = each.value.name
     value = random_password.password[each.key].result
-    key_vault_id = azurerm_key_vault.key_vault.id
+    key_vault_id = data.azurerm_key_vault.key_vault.id
     
     depends_on = [ azurerm_mysql_flexible_server.example ]
 }
