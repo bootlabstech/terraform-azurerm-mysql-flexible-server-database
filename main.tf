@@ -56,7 +56,7 @@ resource "random_password" "password" {
     override_special = "_"
     special = true
     upper = true
-    depends_on = [ azurerm_key_vault.key_vault ]
+    
 
 }
 
