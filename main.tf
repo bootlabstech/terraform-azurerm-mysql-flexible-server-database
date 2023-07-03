@@ -1,4 +1,4 @@
-# get key vault details
+# get key vault details to store DB password as secret
 data "azurerm_key_vault" "key_vault" {
   name  = var.keyvault_name
   resource_group_name = var.resource_group_name
@@ -6,65 +6,79 @@ data "azurerm_key_vault" "key_vault" {
 
 # Creates a Flexible MySQL Server
 resource "azurerm_mysql_flexible_server" "example" {
-  for_each= { for i in var.server_set : i.name => i }
-    resource_group_name          = var.resource_group_name
-    location                     = var.location
-    name                         = each.value.name
-    administrator_login          = each.value.administrator_login
-    administrator_password       = random_password.password[each.key].result
-    backup_retention_days        = each.value.backup_retention_days
-    create_mode                  = each.value.create_mode  
-    sku_name                     = each.value.sku_name
-    version                      = each.value.mysql_version
+  resource_group_name            = var.resource_group_name
+  location                       = var.location
+  name                           = var.name
+  administrator_login            = var.administrator_login
+  administrator_password         = random_password.password.result
+  backup_retention_days          = var.backup_retention_days
+  create_mode                    = var.create_mode  
+  geo_redundant_backup_enabled   = var.geo_redundant_backup_enabled
+  sku_name                       = var.sku_name
+  version                        = var.mysql_version
+  zone                           = var.zone
+  # replication_role               = var.replication_role
+  # delegated_subnet_id          = var.
+  # private_dns_zone_id          = var.
 
-    storage {
-      auto_grow_enabled = each.value.auto_grow_enabled
-      iops = each.value.iops
-      size_gb = each.value.size_gb
-    }
 
-    depends_on = [ random_password.password ]
+  # dynamic "storage" {
+  #   for_each = var.storage ? [{}] : []
+  #    content {
+  #     auto_grow_enabled = var.auto_grow_enabled
+  #     iops = var.iops
+  #     size_gb = var.size_gb
+  #    }
+  # }
+  # dynamic "high_availability" {
+  #   for_each = var.high_availability ? [{}] : []
+  #    content {
+  #     mode = var.mode
+  #     standby_availability_zone = var.standby_availability_zone
+  #    }
+  # }
+  # dynamic "maintenance_window" {
+  #   for_each = var.maintenance_window ? [{}] : []
+  #    content {
+  #     day_of_week = var.day_of_week
+  #     start_hour = var.start_hour
+  #     start_minute = var.start_minute
+  #    }
+  # }
 
 }
 
 
 # Allows all Azure service access the db
 resource "azurerm_mysql_flexible_server_firewall_rule" "firewall_rule" {
-  for_each= { for i in var.server_set : i.name => i }
-  
-    name  = "${each.value.name}-rule"
-    resource_group_name = var.resource_group_name
-    server_name = each.value.name
-    start_ip_address = "0.0.0.0"
-    end_ip_address  = "0.0.0.0"
+  name  = "${var.name}-firewallrule"
+  resource_group_name = var.resource_group_name
+  server_name = var.name
+  start_ip_address = "0.0.0.0"
+  end_ip_address  = "0.0.0.0"
     
     depends_on = [ azurerm_mysql_flexible_server.example ]
 }
 
 
-# Generate random value for the login password
-
 resource "random_password" "password" {
-  for_each= { for i in var.server_set : i.name => i }
-    length = 8
-    lower = true
-    min_lower = 1
-    min_numeric= 1
-    min_special= 1
-    min_upper= 1
-    numeric = true
-    override_special = "_"
-    special = true
-    upper = true
-    
+  length      = 12
+  lower       = true
+  min_lower   = 6
+  min_numeric = 2
+  min_special = 2
+  min_upper   = 2
+  numeric     = true
+  special     = true
+  upper       = true
+
 
 }
 
-# saves login password as keyvault secret
+# Stores DB login password as keyvault secret
 resource "azurerm_key_vault_secret" "mysql_password" {
-  for_each= { for i in var.server_set : i.name => i }
-    name = each.value.name
-    value = random_password.password[each.key].result
+    name = "${var.name}-password"
+    value = random_password.password.result
     key_vault_id = data.azurerm_key_vault.key_vault.id
     
     depends_on = [ azurerm_mysql_flexible_server.example ]
