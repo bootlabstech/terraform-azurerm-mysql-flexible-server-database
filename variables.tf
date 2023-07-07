@@ -1,9 +1,9 @@
 
-variable "keyvault_name" {
-  type        = string
-  description = "The name of the Keyvault where the DB credentials are stored"
+# variable "keyvault_name" {
+#   type        = string
+#   description = "The name of the Keyvault where the DB credentials are stored"
 
-}
+# }
 variable "resource_group_name" {
   type        = string
   description = "The name of the Resource Group where the MySQL Flexible Server should exist"
@@ -22,7 +22,7 @@ variable "name" {
 variable "administrator_login" {
   type        = string
   description = "The Administrator login for the MySQL Flexible Server. Required when create_mode is Default"
-  default = "user01"
+  # default = "user01"
 
 }
 variable "backup_retention_days" {
