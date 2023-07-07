@@ -25,6 +25,12 @@ variable "administrator_login" {
   # default = "user01"
 
 }
+variable "password" {
+  type        = string
+  description = "The Administrator login for the MySQL Flexible Server. Required when create_mode is Default"
+  # default = "user01"
+
+}
 variable "backup_retention_days" {
   type        = number
   description = " The backup retention days for the MySQL Flexible Server. Possible values are between 1 and 35 days. Defaults to 7"
