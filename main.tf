@@ -10,7 +10,12 @@ resource "azurerm_mysql_flexible_server" "example" {
   geo_redundant_backup_enabled   = var.geo_redundant_backup_enabled
   sku_name                       = var.sku_name
   version                        = var.mysql_version
-  zone                           = var.zone
+  zone                           = var.zone 
+  lifecycle {
+    ignore_changes = [
+      tags,
+    ]
+  }
 
 }
 resource "azurerm_mysql_flexible_server_firewall_rule" "firewall_rule" {
