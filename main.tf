@@ -19,16 +19,16 @@ resource "azurerm_mysql_flexible_server" "example" {
 
 }
 
-# # Allows all azure services to connect to the server
-# resource "azurerm_mysql_flexible_server_firewall_rule" "firewall_rule" {
-#   name                = "${var.name}-firewallrule"
-#   resource_group_name = var.resource_group_name
-#   server_name         = var.name
-#   start_ip_address    = "0.0.0.0"
-#   end_ip_address      = "0.0.0.0"
+# Allows all azure services to connect to the server
+resource "azurerm_mysql_flexible_server_firewall_rule" "firewall_rule" {
+  name                = "${var.name}-firewallrule"
+  resource_group_name = var.resource_group_name
+  server_name         = var.name
+  start_ip_address    = "0.0.0.0"
+  end_ip_address      = "0.0.0.0"
 
-#   depends_on = [azurerm_mysql_flexible_server.example]
-# }
+  depends_on = [azurerm_mysql_flexible_server.example]
+}
 
 # get key vault details to store DB password as secret
 data "azurerm_key_vault" "key_vault" {
