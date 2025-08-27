@@ -11,7 +11,7 @@ resource "azurerm_mysql_flexible_server" "example" {
   sku_name                     = var.sku_name
   version                      = var.mysql_version
   zone                         = var.zone
-  public_network_access_enabled       = var.public_network_access_enabled
+  public_network_access       = var.public_network_access
   lifecycle {
     ignore_changes = [
       tags,
