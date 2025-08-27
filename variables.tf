@@ -80,11 +80,11 @@ variable "private_dns_zone_ids" {
   description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group."
 }
 
-variable "public_network_access" {
-  type = string
-  description = "to enable public internet access"
-  default = "Disabled"
-}
+# variable "public_network_access" {
+#   type = string
+#   description = "to enable public internet access"
+#   default = "Disabled"
+# }
 
 
 
