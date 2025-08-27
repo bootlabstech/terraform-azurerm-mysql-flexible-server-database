@@ -80,7 +80,7 @@ variable "private_dns_zone_ids" {
   description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group."
 }
 
-variable "public_network_access" {
+variable "public_network_access_enabled" {
   type = bool
   description = "to enable public internet access"
   default = false
