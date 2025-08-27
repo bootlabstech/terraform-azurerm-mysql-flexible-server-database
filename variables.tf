@@ -73,11 +73,17 @@ variable "is_manual_connection" {
 variable "subresource_names" {
   type        = list(string)
   description = " A list of subresource names which the Private Endpoint is able to connect to."
-  default = [ "mysqlServer" ]
+  default     = ["mysqlServer"]
 }
 variable "private_dns_zone_ids" {
   type        = list(string)
   description = "Specifies the list of Private DNS Zones to include within the private_dns_zone_group."
+}
+
+variable "public_network_access" {
+  type = bool
+  description = "to enable public internet access"
+  default = false
 }
 
 
